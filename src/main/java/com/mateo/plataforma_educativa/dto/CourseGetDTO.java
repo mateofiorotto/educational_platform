@@ -1,30 +1,23 @@
-package com.mateo.plataforma_educativa.model;
+package com.mateo.plataforma_educativa.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mateo.plataforma_educativa.model.Student;
+import com.mateo.plataforma_educativa.model.Teacher;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Table(name = "courses")
-@Entity
-public class Course {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CourseGetDTO implements Serializable {
     private Long id;
     private String name;
+    private Teacher teacher; //replace for DTO TeacherGetDTO
+    private Set<Student> students = new HashSet<>(); //replace for DTO StudentGetDTO
 
-    @ManyToOne
-    @JoinColumn(name="teacher_id", nullable = false)
-    @JsonIgnoreProperties("courses")
-    private Teacher teacher;
+    public CourseGetDTO(){}
 
-    @ManyToMany(mappedBy = "courses")
-    private Set<Student> students = new HashSet<>();
-
-    public Course(){}
-
-    public Course(Long id, String name, Teacher teacher, Set<Student> students) {
+    public CourseGetDTO(Long id, String name, Teacher teacher, Set<Student> students) {
         this.id = id;
         this.name = name;
         this.teacher = teacher;

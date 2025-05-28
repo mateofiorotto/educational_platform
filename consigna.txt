@@ -25,13 +25,22 @@ CRUD completo de cursos
 Para esto tener en cuenta:
 
 Crear los correspondientes controllers, services y repositories para llevar a cabo cada operación de CRUD implementando de igual manera los endpoints correspondientes.
+Para llevar a cabo el modelado tener en cuenta:
+Un curso tiene una lista de alumnos y solo un profesor asignado.
+Un profesor puede dar más de un curso.
+Un alumno puede tener uno o varios cursos asignados.
+
 Establecer los siguientes permisos:
 Los usuarios administradores pueden realizar todas las operaciones CRUD sobre todas las entidades.
 Los usuarios estudiantes solo podrán leer/consultar los cursos y estudiantes disponibles.
 Los usuarios profesores podrán leer tanto cursos, como profesores, como estudiantes.
 Extra (opcional): Los profesores tendrán permiso de EDICIÓN sobre los cursos en los que ellos son profesores.
 
-Para llevar a cabo el modelado tener en cuenta:
-Un curso tiene una lista de alumnos y solo un profesor asignado.
-Un profesor puede dar más de un curso.
-Un alumno puede tener uno o varios cursos asignados.
+POR HACER:
+- Crud de las demas entidades
+- Hacer funcionar el N:N en el curd de Cursos (para guardar estudiantes)
+- Spring Security + JWT
+- DTOs
+- JavaDoc en nuevos metodos
+- Swagger
+- Pruebas en controladores una vez realizado todo
