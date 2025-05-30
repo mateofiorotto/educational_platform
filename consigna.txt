@@ -37,10 +37,7 @@ Los usuarios profesores podrán leer tanto cursos, como profesores, como estudia
 Extra (opcional): Los profesores tendrán permiso de EDICIÓN sobre los cursos en los que ellos son profesores.
 
 POR HACER:
-- Crud de las demas entidades
-- Hacer funcionar el N:N en el curd de Cursos (para guardar estudiantes)
+
 - Spring Security + JWT
-- DTOs
-- JavaDoc en nuevos metodos
 - Swagger
 - Pruebas en controladores una vez realizado todo

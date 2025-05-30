@@ -3,6 +3,7 @@ package com.mateo.plataforma_educativa.controller;
 import com.mateo.plataforma_educativa.dto.CourseGetDTO;
 import com.mateo.plataforma_educativa.dto.CourseSaveDTO;
 import com.mateo.plataforma_educativa.dto.CourseUpdateDTO;
+import com.mateo.plataforma_educativa.dto.ResponseDTO;
 import com.mateo.plataforma_educativa.model.Course;
 import com.mateo.plataforma_educativa.service.CourseService;
 import com.mateo.plataforma_educativa.service.ICourseService;
@@ -29,27 +30,37 @@ public class CourseController {
     public ResponseEntity<?> getCourses(){
         List<CourseGetDTO> coursesList = courseService.getCourses();
 
-        return ResponseEntity.ok(coursesList);
+        ResponseDTO<List<CourseGetDTO>> getResponseCourses = new ResponseDTO<>(coursesList, 200, "Courses returned succesfully");
+
+        return ResponseEntity.ok(getResponseCourses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCourseById(@PathVariable Long id){
 
-        return ResponseEntity.ok(courseService.getCourseById(id));
+        CourseGetDTO course = courseService.getCourseById(id);
+
+        ResponseDTO<CourseGetDTO> getResponseCourse = new ResponseDTO<>(course, 200, "Course returned succesfully");
+
+        return ResponseEntity.ok(getResponseCourse);
     }
 
     @PostMapping("/")
     public ResponseEntity<?> createCourse(@Valid @RequestBody CourseSaveDTO courseDTO){
-        CourseSaveDTO created = courseService.saveCourse(courseDTO);
+        courseService.saveCourse(courseDTO);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        ResponseDTO<CourseSaveDTO> saveCourseResponse = new ResponseDTO<>(courseDTO, 201, "Course created succesfully");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(saveCourseResponse);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCourse(@Valid @RequestBody CourseUpdateDTO courseDTO, @PathVariable Long id){
-        CourseUpdateDTO updated = courseService.updateCourse(courseDTO, id);
+        courseService.updateCourse(courseDTO, id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(updated);
+        ResponseDTO<CourseUpdateDTO> updateCourseResponse = new ResponseDTO<>(courseDTO, 200, "Course updated succesfully");
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateCourseResponse);
     }
 
     @DeleteMapping("/{id}")

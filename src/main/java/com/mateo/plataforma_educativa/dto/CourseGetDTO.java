@@ -1,5 +1,6 @@
 package com.mateo.plataforma_educativa.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mateo.plataforma_educativa.model.Student;
 import com.mateo.plataforma_educativa.model.Teacher;
@@ -10,26 +11,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CourseGetDTO implements Serializable {
-    private Long id;
     private String name;
-    private Teacher teacher; //replace for DTO TeacherGetDTO
-    private Set<Student> students = new HashSet<>(); //replace for DTO StudentGetDTO
+    private TeacherGetDTO teacher; //replace for DTO TeacherGetDTO
 
     public CourseGetDTO(){}
 
-    public CourseGetDTO(Long id, String name, Teacher teacher, Set<Student> students) {
-        this.id = id;
+    public CourseGetDTO(String name, TeacherGetDTO teacher) {
         this.name = name;
         this.teacher = teacher;
-        this.students = students;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -40,19 +29,11 @@ public class CourseGetDTO implements Serializable {
         this.name = name;
     }
 
-    public Teacher getTeacher() {
+    public TeacherGetDTO getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(Teacher teacher) {
+    public void setTeacher(TeacherGetDTO teacher) {
         this.teacher = teacher;
-    }
-
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
     }
 }
