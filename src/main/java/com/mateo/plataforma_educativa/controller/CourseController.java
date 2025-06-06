@@ -10,6 +10,7 @@ import com.mateo.plataforma_educativa.service.ICourseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/courses")
+@PreAuthorize("denyAll()")
 public class CourseController {
 
     private final ICourseService courseService;
@@ -27,6 +29,7 @@ public class CourseController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<?> getCourses(){
         List<CourseGetDTO> coursesList = courseService.getCourses();
 
@@ -36,6 +39,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<?> getCourseById(@PathVariable Long id){
 
         CourseGetDTO course = courseService.getCourseById(id);
@@ -46,6 +50,7 @@ public class CourseController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createCourse(@Valid @RequestBody CourseSaveDTO courseDTO){
         courseService.saveCourse(courseDTO);
 
@@ -55,6 +60,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateCourse(@Valid @RequestBody CourseUpdateDTO courseDTO, @PathVariable Long id){
         courseService.updateCourse(courseDTO, id);
 
@@ -64,6 +70,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteCourse(@PathVariable Long id){
         courseService.deleteCourse(id);
 

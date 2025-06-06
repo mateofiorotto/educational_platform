@@ -5,12 +5,14 @@ import com.mateo.plataforma_educativa.service.ITeacherService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/teachers")
+@PreAuthorize("denyAll()")
 public class TeacherController {
 
     private final ITeacherService teacherService;
@@ -20,6 +22,7 @@ public class TeacherController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<?> getTeachers(){
         List<TeacherGetDTO> teachersList = teacherService.getTeachers();
 
@@ -29,6 +32,7 @@ public class TeacherController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<?> getTeacherById(@PathVariable Long id){
 
         TeacherGetDTO teacher = teacherService.getTeacherById(id);
@@ -39,6 +43,7 @@ public class TeacherController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createTeacher(@Valid @RequestBody TeacherSaveDTO teacherDTO){
         teacherService.saveTeacher(teacherDTO);
 
@@ -48,6 +53,7 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateTeacher(@Valid @RequestBody TeacherUpdateDTO teacherDTO, @PathVariable Long id){
        teacherService.updateTeacher(teacherDTO, id);
 
@@ -57,6 +63,7 @@ public class TeacherController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteTeacher(@PathVariable Long id){
         teacherService.deleteTeacher(id);
 
