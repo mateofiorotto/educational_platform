@@ -39,9 +39,7 @@ Extra (opcional): Los profesores tendrán permiso de EDICIÓN sobre los cursos e
 POR HACER:
 
 1 - Spring Security + JWT
-    2. DTO para respuestas del crud de roles, usersec y permission. CONFIGURAR ERROR 500 PARA "ACCESS DENIED" y cambiarlo a 403
-    3. Implementar JWT
-    4. EXTRAS: los profes pueden editar cursos donde son profes
-    5. Volver a probar controladores
+    1. DTO para respuestas del crud de roles, usersec y permission.
+    2. Volver a probar controladores
 2 - Swagger
 3 - README

@@ -49,6 +49,7 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public TeacherUpdateDTO updateTeacher(TeacherUpdateDTO teacherDTO, Long id) {
+
         Teacher findedTeacher = teacherRepository.findById(id).orElseThrow(() -> new NotFoundException("Teacher not found"));
 
         findedTeacher.setName(teacherDTO.getName());

@@ -1,5 +1,7 @@
 package com.mateo.plataforma_educativa.security.config;
 
+import com.mateo.plataforma_educativa.security.config.filter.JwtTokenValidator;
+import com.mateo.plataforma_educativa.utils.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,11 +17,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    private JwtUtils jwtUtils;
+
+    public SecurityConfig(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
 
     //por ahora tendra para acceder a todos los endpoints
     @Bean
@@ -27,7 +35,7 @@ public class SecurityConfig {
         http
                 .csrf((csrf) -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults());
+                .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class);
         return http.build();
     }
 
