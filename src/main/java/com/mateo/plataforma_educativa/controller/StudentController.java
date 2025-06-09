@@ -1,10 +1,8 @@
 package com.mateo.plataforma_educativa.controller;
 
 import com.mateo.plataforma_educativa.dto.*;
-import com.mateo.plataforma_educativa.model.Student;
 import com.mateo.plataforma_educativa.service.IStudentService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,9 +24,9 @@ public class StudentController {
     @GetMapping("/")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<?> getStudents(){
-        List<StudentGetDTO> studentsList = studentService.getStudents();
+        List<StudentResponseDTO> studentsList = studentService.getStudents();
 
-        ResponseDTO<List<StudentGetDTO>> getResponseStudents = new ResponseDTO<>(studentsList, 200, "Students returned succesfully");
+        ResponseDTO<List<StudentResponseDTO>> getResponseStudents = new ResponseDTO<>(studentsList, 200, "Students returned succesfully");
 
         return ResponseEntity.ok(getResponseStudents);
     }
@@ -36,29 +34,29 @@ public class StudentController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<?> getStudentById(@PathVariable Long id){
-        StudentGetDTO student = studentService.getStudentById(id);
+        StudentResponseDTO student = studentService.getStudentById(id);
 
-        ResponseDTO<StudentGetDTO> getResponseStudent = new ResponseDTO<>(student, 200, "Student returned succesfully");
+        ResponseDTO<StudentResponseDTO> getResponseStudent = new ResponseDTO<>(student, 200, "Student returned succesfully");
 
         return ResponseEntity.ok(getResponseStudent);
     }
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createStudent(@Valid @RequestBody StudentSaveDTO studentDTO){
+    public ResponseEntity<?> createStudent(@Valid @RequestBody StudentRequestDTO studentDTO){
         studentService.saveStudent(studentDTO);
 
-        ResponseDTO<StudentSaveDTO> saveStudentResponse = new ResponseDTO<>(studentDTO, 201, "Student created succesfully");
+        ResponseDTO<StudentRequestDTO> saveStudentResponse = new ResponseDTO<>(studentDTO, 201, "Student created succesfully");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveStudentResponse);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateStudent(@Valid @RequestBody StudentUpdateDTO studentDTO, @PathVariable Long id){
+    public ResponseEntity<?> updateStudent(@Valid @RequestBody StudentRequestDTO studentDTO, @PathVariable Long id){
         studentService.updateStudent(studentDTO, id);
 
-        ResponseDTO<StudentUpdateDTO> updateStudentResponse = new ResponseDTO<>(studentDTO, 200, "Student updated succesfully");
+        ResponseDTO<StudentRequestDTO> updateStudentResponse = new ResponseDTO<>(studentDTO, 200, "Student updated succesfully");
 
         return ResponseEntity.status(HttpStatus.OK).body(updateStudentResponse);
     }

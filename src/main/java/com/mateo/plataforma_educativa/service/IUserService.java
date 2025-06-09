@@ -1,5 +1,8 @@
 package com.mateo.plataforma_educativa.service;
 
+import com.mateo.plataforma_educativa.dto.UserSecRequestDTO;
+import com.mateo.plataforma_educativa.dto.UserSecResponseDTO;
+import com.mateo.plataforma_educativa.dto.UserSecUpdateDTO;
 import com.mateo.plataforma_educativa.model.UserSec;
 
 import java.util.List;
@@ -10,7 +13,7 @@ public interface IUserService {
      *
      * @return list of users
      * */
-    public List<UserSec> getUsers();
+    public List<UserSecResponseDTO> getUsers();
 
     /**
      * Returns a specific user
@@ -18,7 +21,7 @@ public interface IUserService {
      * @param id
      * @return a user
      * */
-    public UserSec getUserById(Long id);
+    public UserSecResponseDTO getUserById(Long id);
 
     /**
      * Create a user
@@ -26,7 +29,7 @@ public interface IUserService {
      * @param user
      * @return the created user info
      * */
-    public UserSec saveUser(UserSec user);
+    public UserSecRequestDTO saveUser(UserSecRequestDTO user);
 
     /**
      * Update a user by id
@@ -35,7 +38,7 @@ public interface IUserService {
      * @param id
      * @return the updated user
      * */
-    public UserSec updateUser(UserSec user, Long id);
+    public UserSecUpdateDTO updateUser(UserSecUpdateDTO user, Long id);
 
     /**
      * Delete a user

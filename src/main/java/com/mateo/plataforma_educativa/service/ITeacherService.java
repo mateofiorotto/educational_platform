@@ -1,8 +1,7 @@
 package com.mateo.plataforma_educativa.service;
 
-import com.mateo.plataforma_educativa.dto.TeacherGetDTO;
-import com.mateo.plataforma_educativa.dto.TeacherSaveDTO;
-import com.mateo.plataforma_educativa.dto.TeacherUpdateDTO;
+import com.mateo.plataforma_educativa.dto.TeacherResponseDTO;
+import com.mateo.plataforma_educativa.dto.TeacherRequestDTO;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface ITeacherService {
      *
      * @return list of teachers
      * */
-    public List<TeacherGetDTO> getTeachers();
+    public List<TeacherResponseDTO> getTeachers();
 
     /**
      * Returns a specific teacher
@@ -20,7 +19,7 @@ public interface ITeacherService {
      * @param id
      * @return a teacher
      * */
-    public TeacherGetDTO getTeacherById(Long id);
+    public TeacherResponseDTO getTeacherById(Long id);
 
     /**
      * Create a teacher
@@ -28,7 +27,7 @@ public interface ITeacherService {
      * @param teacherDTO
      * @return the created teacher info
      * */
-    public TeacherSaveDTO saveTeacher(TeacherSaveDTO teacherDTO);
+    public TeacherRequestDTO saveTeacher(TeacherRequestDTO teacherDTO);
 
     /**
      * Update a teacher by id
@@ -37,7 +36,7 @@ public interface ITeacherService {
      * @param id
      * @return the updated teacher
      * */
-    public TeacherUpdateDTO updateTeacher(TeacherUpdateDTO teacherDTO, Long id);
+    public TeacherRequestDTO updateTeacher(TeacherRequestDTO teacherDTO, Long id);
 
     /**
      * Delete a teacher

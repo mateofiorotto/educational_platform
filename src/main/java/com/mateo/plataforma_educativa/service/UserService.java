@@ -1,8 +1,15 @@
 package com.mateo.plataforma_educativa.service;
 
+import com.mateo.plataforma_educativa.dto.RoleIdDTO;
+import com.mateo.plataforma_educativa.dto.UserSecRequestDTO;
+import com.mateo.plataforma_educativa.dto.UserSecResponseDTO;
+import com.mateo.plataforma_educativa.dto.UserSecUpdateDTO;
+import com.mateo.plataforma_educativa.exception.BadRequestException;
 import com.mateo.plataforma_educativa.exception.NotFoundException;
+import com.mateo.plataforma_educativa.mapper.IUserMapper;
 import com.mateo.plataforma_educativa.model.Role;
 import com.mateo.plataforma_educativa.model.UserSec;
+import com.mateo.plataforma_educativa.repository.IRoleRepository;
 import com.mateo.plataforma_educativa.repository.IUserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,57 +17,58 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
-    private final RoleService roleService;
+    private final IRoleRepository roleRepository;
 
-    public UserService(IUserRepository userRepository, RoleService roleService) {
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
     @Override
-    public List<UserSec> getUsers() {
-        return userRepository.findAll();
+    public List<UserSecResponseDTO> getUsers() {
+        List<UserSec> users = userRepository.findAll();
+
+        return users.stream().map(user -> IUserMapper.mapper.userSecToUserSecGetDTO(user)).collect(Collectors.toList());
     }
 
     @Override
-    public UserSec getUserById(Long id) {
+    public UserSecResponseDTO getUserById(Long id) {
         UserSec user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with ID: " + id));
 
-        return user;
+        return IUserMapper.mapper.userSecToUserSecGetDTO(user);
     }
 
     @Override
-    public UserSec saveUser(UserSec user) {
+    public UserSecRequestDTO saveUser(UserSecRequestDTO user) {
+
+        UserSec userToSave = IUserMapper.mapper.userSecSaveDTOToUserSec(user);
+
+        userToSave.setPassword(this.encriptPassword(user.getPassword()));
 
         Set<Role> roleList = new HashSet<>();
-        Role readRole;
+        for (RoleIdDTO r : user.getRoles()) {
+            Role existingRole = roleRepository.findById(r.getId()).orElseThrow(() -> new BadRequestException("Role not found"));
 
-        //Encript password
-        user.setPassword(this.encriptPassword(user.getPassword()));
-
-        for(Role r : user.getRoles()){
-            readRole = roleService.getRoleById(r.getId());
-
-            if(readRole != null){
-                roleList.add(readRole);
-            }
+            roleList.add(existingRole);
         }
 
-        user.setRoles(roleList);
+        userToSave.setRoles(roleList);
+        UserSec savedUser = userRepository.save(userToSave);
 
-        return userRepository.save(user);
+        return IUserMapper.mapper.userSecToUserSecSaveDTO(savedUser);
     }
 
     @Override
-    public UserSec updateUser(UserSec user, Long id) {
-        UserSec userToUpdate = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with ID: " + id));
+    public UserSecUpdateDTO updateUser(UserSecUpdateDTO user, Long id) {
+        UserSec userToUpdate = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + id));
 
-        userToUpdate.setUsername(user.getUsername());
         userToUpdate.setPassword(this.encriptPassword(user.getPassword()));
         userToUpdate.setEnabled(user.isEnabled());
         userToUpdate.setAccountNotExpired(user.isAccountNotExpired());
@@ -68,19 +76,18 @@ public class UserService implements IUserService {
         userToUpdate.setCredentialNotExpired(user.isCredentialNotExpired());
 
         Set<Role> roleList = new HashSet<>();
-        for(Role r : user.getRoles()){
-            Role readRole = roleService.getRoleById(r.getId());
-            System.out.println(r.getId());
+        for (RoleIdDTO r : user.getRoles()) {
+            Role existingRole = roleRepository.findById(r.getId())
+                    .orElseThrow(() -> new BadRequestException("Role not found"));
 
-            if(readRole != null){
-                roleList.add(readRole);
-            }
-            System.out.println(readRole);
+            roleList.add(existingRole);
         }
 
         userToUpdate.setRoles(roleList);
 
-        return userRepository.save(userToUpdate);
+        UserSec updatedUser = userRepository.save(userToUpdate);
+
+        return IUserMapper.mapper.userSecToUserSecUpdateDTO(updatedUser);
     }
 
     @Override

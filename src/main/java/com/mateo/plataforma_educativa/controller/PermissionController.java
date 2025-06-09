@@ -1,5 +1,7 @@
 package com.mateo.plataforma_educativa.controller;
 
+import com.mateo.plataforma_educativa.dto.PermissionRequestDTO;
+import com.mateo.plataforma_educativa.dto.PermissionResponseDTO;
 import com.mateo.plataforma_educativa.dto.ResponseDTO;
 import com.mateo.plataforma_educativa.model.Permission;
 import com.mateo.plataforma_educativa.service.IPermissionService;
@@ -24,9 +26,9 @@ public class PermissionController {
     @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getPermissions() {
-        List<Permission> permissions = permissionService.getPermissions();
+        List<PermissionResponseDTO> permissions = permissionService.getPermissions();
 
-        ResponseDTO<List<Permission>> getResponsePermissions = new ResponseDTO<>(permissions, 200, "Permissions returned successfully");
+        ResponseDTO<List<PermissionResponseDTO>> getResponsePermissions = new ResponseDTO<>(permissions, 200, "Permissions returned successfully");
 
         return ResponseEntity.ok(getResponsePermissions);
     }
@@ -35,29 +37,29 @@ public class PermissionController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getPermissionById(@PathVariable Long id){
 
-        Permission permission = permissionService.getPermissionById(id);
+        PermissionResponseDTO permission = permissionService.getPermissionById(id);
 
-        ResponseDTO<Permission> getResponsePermission = new ResponseDTO<>(permission, 200, "Permission returned succesfully");
+        ResponseDTO<PermissionResponseDTO> getResponsePermission = new ResponseDTO<>(permission, 200, "Permission returned succesfully");
 
         return ResponseEntity.ok(getResponsePermission);
     }
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> savePermission(@Valid @RequestBody Permission permission){
+    public ResponseEntity<?> savePermission(@Valid @RequestBody PermissionRequestDTO permission){
         permissionService.savePermission(permission);
 
-        ResponseDTO<Permission> savePermissionResponse = new ResponseDTO<>(permission, 200, "Permission saved succesfully");
+        ResponseDTO<PermissionRequestDTO> savePermissionResponse = new ResponseDTO<>(permission, 200, "Permission saved succesfully");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savePermissionResponse);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updatePermission(@Valid @RequestBody Permission permission, @PathVariable Long id){
+    public ResponseEntity<?> updatePermission(@Valid @RequestBody PermissionRequestDTO permission, @PathVariable Long id){
         permissionService.updatePermission(permission, id);
 
-        ResponseDTO<Permission> updatePermissionResponse = new ResponseDTO<>(permission, 200, "Permission updated succesfully");
+        ResponseDTO<PermissionRequestDTO> updatePermissionResponse = new ResponseDTO<>(permission, 200, "Permission updated succesfully");
 
         return ResponseEntity.status(HttpStatus.OK).body(updatePermissionResponse);
     }

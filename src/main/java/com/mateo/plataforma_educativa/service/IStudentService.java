@@ -1,8 +1,7 @@
 package com.mateo.plataforma_educativa.service;
 
-import com.mateo.plataforma_educativa.dto.StudentGetDTO;
-import com.mateo.plataforma_educativa.dto.StudentSaveDTO;
-import com.mateo.plataforma_educativa.dto.StudentUpdateDTO;
+import com.mateo.plataforma_educativa.dto.StudentResponseDTO;
+import com.mateo.plataforma_educativa.dto.StudentRequestDTO;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface IStudentService {
      *
      * @return list of students
      * */
-    public List<StudentGetDTO> getStudents();
+    public List<StudentResponseDTO> getStudents();
 
     /**
      * Returns a specific student
@@ -22,7 +21,7 @@ public interface IStudentService {
      * @param id
      * @return a student
      * */
-    public StudentGetDTO getStudentById(Long id);
+    public StudentResponseDTO getStudentById(Long id);
 
     /**
      * Create a student
@@ -30,7 +29,7 @@ public interface IStudentService {
      * @param studentDTO
      * @return the created student info
      * */
-    public StudentSaveDTO saveStudent(StudentSaveDTO studentDTO);
+    public StudentRequestDTO saveStudent(StudentRequestDTO studentDTO);
 
     /**
      * Update a student by id
@@ -39,7 +38,7 @@ public interface IStudentService {
      * @param id
      * @return the updated student
      * */
-    public StudentUpdateDTO updateStudent(StudentUpdateDTO studentDTO, Long id);
+    public StudentRequestDTO updateStudent(StudentRequestDTO studentDTO, Long id);
 
     /**
      * Delete a student

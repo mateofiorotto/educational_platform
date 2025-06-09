@@ -1,6 +1,9 @@
 package com.mateo.plataforma_educativa.controller;
 
 import com.mateo.plataforma_educativa.dto.ResponseDTO;
+import com.mateo.plataforma_educativa.dto.UserSecRequestDTO;
+import com.mateo.plataforma_educativa.dto.UserSecResponseDTO;
+import com.mateo.plataforma_educativa.dto.UserSecUpdateDTO;
 import com.mateo.plataforma_educativa.model.UserSec;
 import com.mateo.plataforma_educativa.service.IUserService;
 import jakarta.validation.Valid;
@@ -24,9 +27,9 @@ public class UserController {
     @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getUsers() {
-        List<UserSec> users = userService.getUsers();
+        List<UserSecResponseDTO> users = userService.getUsers();
 
-        ResponseDTO<List<UserSec>> getResponseUsers = new ResponseDTO<>(users, 200, "Users returned successfully");
+        ResponseDTO<List<UserSecResponseDTO>> getResponseUsers = new ResponseDTO<>(users, 200, "Users returned successfully");
 
         return ResponseEntity.ok(getResponseUsers);
     }
@@ -35,29 +38,29 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getUserById(@PathVariable Long id){
 
-        UserSec user = userService.getUserById(id);
+        UserSecResponseDTO user = userService.getUserById(id);
 
-        ResponseDTO<UserSec> getResponseUser = new ResponseDTO<>(user, 200, "User returned succesfully");
+        ResponseDTO<UserSecResponseDTO> getResponseUser = new ResponseDTO<>(user, 200, "User returned succesfully");
 
         return ResponseEntity.ok(getResponseUser);
     }
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> saveUser(@Valid @RequestBody UserSec user){
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UserSecRequestDTO user){
         userService.saveUser(user);
 
-        ResponseDTO<UserSec> saveUserResponse = new ResponseDTO<>(user, 200, "User saved succesfully");
+        ResponseDTO<UserSecRequestDTO> saveUserResponse = new ResponseDTO<>(user, 200, "User saved succesfully");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveUserResponse);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserSec user, @PathVariable Long id){
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserSecUpdateDTO user, @PathVariable Long id){
         userService.updateUser(user, id);
 
-        ResponseDTO<UserSec> updateUserResponse = new ResponseDTO<>(user, 200, "User updated succesfully");
+        ResponseDTO<UserSecUpdateDTO> updateUserResponse = new ResponseDTO<>(user, 200, "User updated succesfully");
 
         return ResponseEntity.status(HttpStatus.OK).body(updateUserResponse);
     }

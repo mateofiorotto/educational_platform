@@ -33,6 +33,13 @@ public class UserDetailsServiceImp implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Load user by username and add the authorities of that user
+     *
+     * @param username
+     *
+     * @return user and authorities list
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -56,10 +63,17 @@ public class UserDetailsServiceImp implements UserDetailsService {
                 authorityList);
     }
 
+    /**
+     * Login with username and password
+     *
+     * @param authLoginRequest
+     * @return response if the login is OK
+     */
     public AuthResponseDTO login (AuthLoginRequestDTO authLoginRequest){
         String username = authLoginRequest.username();
         String password = authLoginRequest.password();
 
+        //Call auth method
         Authentication authentication = this.authenticate (username, password);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -69,15 +83,24 @@ public class UserDetailsServiceImp implements UserDetailsService {
         return authResponseDTO;
     }
 
-    public Authentication authenticate (String username, String password) {
+    /**
+     * Authenticate the user
+     *
+     * @param username
+     * @param password
+     * @return username with authorities and password
+     */
+    public Authentication authenticate(String username, String password) {
         UserDetails userDetails = this.loadUserByUsername(username);
 
+        //If !user
         if (userDetails == null) {
             throw new BadCredentialsException("Invalid username or password");
         }
 
+        //If !pw
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("Invalid password");
+            throw new BadCredentialsException("Invalid username or password");
         }
         return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
     }

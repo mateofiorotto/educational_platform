@@ -1,12 +1,9 @@
 package com.mateo.plataforma_educativa.service;
 
-import com.mateo.plataforma_educativa.dto.CourseGetDTO;
-import com.mateo.plataforma_educativa.dto.CourseSaveDTO;
-import com.mateo.plataforma_educativa.dto.CourseUpdateDTO;
-import com.mateo.plataforma_educativa.model.Course;
+import com.mateo.plataforma_educativa.dto.CourseResponseDTO;
+import com.mateo.plataforma_educativa.dto.CourseRequestDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ICourseService {
 
@@ -16,7 +13,7 @@ public interface ICourseService {
      *
      * @return list of courses
      * */
-    public List<CourseGetDTO> getCourses();
+    public List<CourseResponseDTO> getCourses();
 
     /**
      * Returns a specific course
@@ -24,7 +21,7 @@ public interface ICourseService {
      * @param id
      * @return a course
      * */
-    public CourseGetDTO getCourseById(Long id);
+    public CourseResponseDTO getCourseById(Long id);
 
     /**
      * Create a course
@@ -32,7 +29,7 @@ public interface ICourseService {
      * @param courseDTO
      * @return the created course info
      * */
-    public CourseSaveDTO saveCourse(CourseSaveDTO courseDTO);
+    public CourseRequestDTO saveCourse(CourseRequestDTO courseDTO);
 
     /**
      * Update a course by id
@@ -41,7 +38,7 @@ public interface ICourseService {
      * @param id
      * @return the updated course
      * */
-    public CourseUpdateDTO updateCourse(CourseUpdateDTO courseDTO, Long id);
+    public CourseRequestDTO updateCourse(CourseRequestDTO courseDTO, Long id);
 
     /**
      * Delete a course

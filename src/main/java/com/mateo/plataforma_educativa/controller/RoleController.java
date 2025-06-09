@@ -1,6 +1,8 @@
 package com.mateo.plataforma_educativa.controller;
 
 import com.mateo.plataforma_educativa.dto.ResponseDTO;
+import com.mateo.plataforma_educativa.dto.RoleRequestDTO;
+import com.mateo.plataforma_educativa.dto.RoleResponseDTO;
 import com.mateo.plataforma_educativa.model.Permission;
 import com.mateo.plataforma_educativa.model.Role;
 import com.mateo.plataforma_educativa.service.IPermissionService;
@@ -30,9 +32,9 @@ public class RoleController {
     @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getRoles() {
-        List<Role> roles = roleService.getRoles();
+        List<RoleResponseDTO> roles = roleService.getRoles();
 
-        ResponseDTO<List<Role>> getResponseRoles = new ResponseDTO<>(roles, 200, "Roles returned successfully");
+        ResponseDTO<List<RoleResponseDTO>> getResponseRoles = new ResponseDTO<>(roles, 200, "Roles returned successfully");
 
         return ResponseEntity.ok(getResponseRoles);
     }
@@ -41,29 +43,29 @@ public class RoleController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getRoleById(@PathVariable Long id){
 
-        Role role = roleService.getRoleById(id);
+        RoleResponseDTO role = roleService.getRoleById(id);
 
-        ResponseDTO<Role> getResponseRole = new ResponseDTO<>(role, 200, "Role returned succesfully");
+        ResponseDTO<RoleResponseDTO> getResponseRole = new ResponseDTO<>(role, 200, "Role returned succesfully");
 
         return ResponseEntity.ok(getResponseRole);
     }
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> saveRole(@Valid @RequestBody Role role){
+    public ResponseEntity<?> saveRole(@Valid @RequestBody RoleRequestDTO role){
         roleService.saveRole(role);
 
-        ResponseDTO<Role> saveRoleResponse = new ResponseDTO<>(role, 200, "Role saved succesfully");
+        ResponseDTO<RoleRequestDTO> saveRoleResponse = new ResponseDTO<>(role, 200, "Role saved succesfully");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveRoleResponse);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateRole(@Valid @RequestBody Role role, @PathVariable Long id){
+    public ResponseEntity<?> updateRole(@Valid @RequestBody RoleRequestDTO role, @PathVariable Long id){
         roleService.updateRole(role, id);
 
-        ResponseDTO<Role> updateRoleResponse = new ResponseDTO<>(role, 200, "Role updated succesfully");
+        ResponseDTO<RoleRequestDTO> updateRoleResponse = new ResponseDTO<>(role, 200, "Role updated succesfully");
 
         return ResponseEntity.status(HttpStatus.OK).body(updateRoleResponse);
     }

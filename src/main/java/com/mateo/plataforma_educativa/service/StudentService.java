@@ -1,12 +1,10 @@
 package com.mateo.plataforma_educativa.service;
 
 import com.mateo.plataforma_educativa.dto.CourseIdDTO;
-import com.mateo.plataforma_educativa.dto.StudentGetDTO;
-import com.mateo.plataforma_educativa.dto.StudentSaveDTO;
-import com.mateo.plataforma_educativa.dto.StudentUpdateDTO;
+import com.mateo.plataforma_educativa.dto.StudentRequestDTO;
+import com.mateo.plataforma_educativa.dto.StudentResponseDTO;
 import com.mateo.plataforma_educativa.exception.BadRequestException;
 import com.mateo.plataforma_educativa.exception.NotFoundException;
-import com.mateo.plataforma_educativa.mapper.ICourseMapper;
 import com.mateo.plataforma_educativa.mapper.IStudentMapper;
 import com.mateo.plataforma_educativa.model.Course;
 import com.mateo.plataforma_educativa.model.Student;
@@ -31,24 +29,22 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public List<StudentGetDTO> getStudents() {
+    public List<StudentResponseDTO> getStudents() {
         List<Student> students = studentRepository.findAll();
 
         return students.stream().map(student -> IStudentMapper.mapper.studentToStudentGetDTO(student)).collect(Collectors.toList());
     }
 
     @Override
-    public StudentGetDTO getStudentById(Long id) {
+    public StudentResponseDTO getStudentById(Long id) {
         Student student = studentRepository.findById(id).orElseThrow(() -> new NotFoundException("Student not found with ID: " + id));
 
         return IStudentMapper.mapper.studentToStudentGetDTO(student);
     }
 
     @Override
-    public StudentSaveDTO saveStudent(StudentSaveDTO studentDTO) {
+    public StudentRequestDTO saveStudent(StudentRequestDTO studentDTO) {
         Student studentToSave = IStudentMapper.mapper.studentSaveDTOToStudent(studentDTO);
-
-        studentToSave.setName(studentDTO.getName());
 
         //Create a new SET (list)
         Set<Course> courses = new HashSet<>();
@@ -69,7 +65,7 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public StudentUpdateDTO updateStudent(StudentUpdateDTO studentDTO, Long id) {
+    public StudentRequestDTO updateStudent(StudentRequestDTO studentDTO, Long id) {
         Student findedStudent = studentRepository.findById(id).orElseThrow(() -> new NotFoundException("Student not found"));
 
         findedStudent.setName(studentDTO.getName());

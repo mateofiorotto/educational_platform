@@ -1,21 +1,16 @@
 package com.mateo.plataforma_educativa.dto;
 
-import com.mateo.plataforma_educativa.model.Course;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public class TeacherSaveDTO {
+public class TeacherRequestDTO {
     @NotBlank(message = "Name is Required")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
 
-    public TeacherSaveDTO(){}
+    public TeacherRequestDTO(){}
 
-    public TeacherSaveDTO(String name) {
+    public TeacherRequestDTO(String name) {
         this.name = name;
     }
 

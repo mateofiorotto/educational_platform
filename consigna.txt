@@ -39,7 +39,6 @@ Extra (opcional): Los profesores tendrán permiso de EDICIÓN sobre los cursos e
 POR HACER:
 
 1 - Spring Security + JWT
-    1. DTO para respuestas del crud de roles, usersec y permission.
-    2. Volver a probar controladores
+    1. Testear controladores
 2 - Swagger
 3 - README

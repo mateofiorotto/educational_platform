@@ -1,8 +1,7 @@
 package com.mateo.plataforma_educativa.service;
 
-import com.mateo.plataforma_educativa.dto.TeacherGetDTO;
-import com.mateo.plataforma_educativa.dto.TeacherSaveDTO;
-import com.mateo.plataforma_educativa.dto.TeacherUpdateDTO;
+import com.mateo.plataforma_educativa.dto.TeacherRequestDTO;
+import com.mateo.plataforma_educativa.dto.TeacherResponseDTO;
 import com.mateo.plataforma_educativa.exception.NotFoundException;
 import com.mateo.plataforma_educativa.mapper.ITeacherMapper;
 import com.mateo.plataforma_educativa.model.Teacher;
@@ -23,24 +22,22 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
-    public List<TeacherGetDTO> getTeachers() {
+    public List<TeacherResponseDTO> getTeachers() {
         List<Teacher> teachers = teacherRepository.findAll();
 
         return teachers.stream().map(teacher -> ITeacherMapper.mapper.teacherToTeacherGetDTO(teacher)).collect(Collectors.toList());
     }
 
     @Override
-    public TeacherGetDTO getTeacherById(Long id) {
+    public TeacherResponseDTO getTeacherById(Long id) {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(() -> new NotFoundException("Teacher not found with ID: " + id));
 
         return ITeacherMapper.mapper.teacherToTeacherGetDTO(teacher);
     }
 
     @Override
-    public TeacherSaveDTO saveTeacher(TeacherSaveDTO teacherDTO) {
+    public TeacherRequestDTO saveTeacher(TeacherRequestDTO teacherDTO) {
         Teacher teacherToSave = ITeacherMapper.mapper.teacherSaveDTOToTeacher(teacherDTO);
-
-        teacherToSave.setName(teacherDTO.getName());
 
         teacherRepository.save(teacherToSave);
 
@@ -48,7 +45,7 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
-    public TeacherUpdateDTO updateTeacher(TeacherUpdateDTO teacherDTO, Long id) {
+    public TeacherRequestDTO updateTeacher(TeacherRequestDTO teacherDTO, Long id) {
 
         Teacher findedTeacher = teacherRepository.findById(id).orElseThrow(() -> new NotFoundException("Teacher not found"));
 
@@ -64,7 +61,5 @@ public class TeacherService implements ITeacherService {
         Teacher teacherToDelete = teacherRepository.findById(id).orElseThrow(() -> new NotFoundException("Teacher not found"));
 
         teacherRepository.delete(teacherToDelete);
-
-
     }
 }

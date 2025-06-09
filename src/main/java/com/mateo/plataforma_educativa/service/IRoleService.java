@@ -1,5 +1,7 @@
 package com.mateo.plataforma_educativa.service;
 
+import com.mateo.plataforma_educativa.dto.RoleRequestDTO;
+import com.mateo.plataforma_educativa.dto.RoleResponseDTO;
 import com.mateo.plataforma_educativa.model.Role;
 
 import java.util.List;
@@ -10,7 +12,7 @@ public interface IRoleService {
      *
      * @return list of roles
      * */
-    public List<Role> getRoles();
+    public List<RoleResponseDTO> getRoles();
 
     /**
      * Returns a specific role
@@ -18,7 +20,7 @@ public interface IRoleService {
      * @param id
      * @return a role
      * */
-    public Role getRoleById(Long id);
+    public RoleResponseDTO getRoleById(Long id);
 
     /**
      * Create a role
@@ -26,7 +28,7 @@ public interface IRoleService {
      * @param role
      * @return the created role info
      * */
-    public Role saveRole(Role role);
+    public RoleRequestDTO saveRole(RoleRequestDTO role);
 
     /**
      * Update a role by id
@@ -35,7 +37,7 @@ public interface IRoleService {
      * @param id
      * @return the updated role
      * */
-    public Role updateRole(Role role, Long id);
+    public RoleRequestDTO updateRole(RoleRequestDTO role, Long id);
 
     /**
      * Delete a role

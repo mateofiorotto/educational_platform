@@ -24,9 +24,9 @@ public class TeacherController {
     @GetMapping("/")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<?> getTeachers(){
-        List<TeacherGetDTO> teachersList = teacherService.getTeachers();
+        List<TeacherResponseDTO> teachersList = teacherService.getTeachers();
 
-        ResponseDTO<List<TeacherGetDTO>> getResponseTeachers = new ResponseDTO<>(teachersList, 200, "Teachers returned succesfully");
+        ResponseDTO<List<TeacherResponseDTO>> getResponseTeachers = new ResponseDTO<>(teachersList, 200, "Teachers returned succesfully");
 
         return ResponseEntity.ok(getResponseTeachers);
     }
@@ -35,29 +35,29 @@ public class TeacherController {
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<?> getTeacherById(@PathVariable Long id){
 
-        TeacherGetDTO teacher = teacherService.getTeacherById(id);
+        TeacherResponseDTO teacher = teacherService.getTeacherById(id);
 
-        ResponseDTO<TeacherGetDTO> getResponseTeacher = new ResponseDTO<>(teacher, 200, "Teacher returned succesfully");
+        ResponseDTO<TeacherResponseDTO> getResponseTeacher = new ResponseDTO<>(teacher, 200, "Teacher returned succesfully");
 
         return ResponseEntity.ok(getResponseTeacher);
     }
 
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createTeacher(@Valid @RequestBody TeacherSaveDTO teacherDTO){
+    public ResponseEntity<?> createTeacher(@Valid @RequestBody TeacherRequestDTO teacherDTO){
         teacherService.saveTeacher(teacherDTO);
 
-        ResponseDTO<TeacherSaveDTO> saveStudentResponse = new ResponseDTO<>(teacherDTO, 201, "Teacher created succesfully");
+        ResponseDTO<TeacherRequestDTO> saveStudentResponse = new ResponseDTO<>(teacherDTO, 201, "Teacher created succesfully");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saveStudentResponse);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateTeacher(@Valid @RequestBody TeacherUpdateDTO teacherDTO, @PathVariable Long id){
+    public ResponseEntity<?> updateTeacher(@Valid @RequestBody TeacherRequestDTO teacherDTO, @PathVariable Long id){
        teacherService.updateTeacher(teacherDTO, id);
 
-        ResponseDTO<TeacherUpdateDTO> updateStudentResponse = new ResponseDTO<>(teacherDTO, 200, "Teacher updated succesfully");
+        ResponseDTO<TeacherRequestDTO> updateStudentResponse = new ResponseDTO<>(teacherDTO, 200, "Teacher updated succesfully");
 
         return ResponseEntity.status(HttpStatus.OK).body(updateStudentResponse);
     }

@@ -1,5 +1,7 @@
 package com.mateo.plataforma_educativa.service;
 
+import com.mateo.plataforma_educativa.dto.PermissionRequestDTO;
+import com.mateo.plataforma_educativa.dto.PermissionResponseDTO;
 import com.mateo.plataforma_educativa.model.Permission;
 
 import java.util.List;
@@ -10,7 +12,7 @@ public interface IPermissionService {
      *
      * @return list of permissions
      * */
-    public List<Permission> getPermissions();
+    public List<PermissionResponseDTO> getPermissions();
 
     /**
      * Returns a specific permission
@@ -18,7 +20,7 @@ public interface IPermissionService {
      * @param id
      * @return a permission
      * */
-    public Permission getPermissionById(Long id);
+    public PermissionResponseDTO getPermissionById(Long id);
 
     /**
      * Create a permission
@@ -26,7 +28,7 @@ public interface IPermissionService {
      * @param permission
      * @return the created permission info
      * */
-    public Permission savePermission(Permission permission);
+    public PermissionRequestDTO savePermission(PermissionRequestDTO permission);
 
     /**
      * Update a permission by id
@@ -35,7 +37,7 @@ public interface IPermissionService {
      * @param id
      * @return the updated permission
      * */
-    public Permission updatePermission(Permission permission, Long id);
+    public PermissionRequestDTO updatePermission(PermissionRequestDTO permission, Long id);
 
     /**
      * Delete a permission
