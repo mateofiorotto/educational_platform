@@ -37,8 +37,5 @@ Los usuarios profesores podrán leer tanto cursos, como profesores, como estudia
 Extra (opcional): Los profesores tendrán permiso de EDICIÓN sobre los cursos en los que ellos son profesores.
 
 POR HACER:
-
-1 - Spring Security + JWT
-    1. Testear controladores
-2 - Swagger
-3 - README
+1 - README
+2 - SWAGGER
