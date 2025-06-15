@@ -1,10 +1,12 @@
 package com.mateo.plataforma_educativa.exception;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -63,7 +65,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //403 - Access denied
+    //403 forbidden - Access denied
     @ExceptionHandler(value = {AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(Exception e) {
         ApiException apiException = new ApiException(
@@ -75,4 +77,31 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(apiException, HttpStatus.FORBIDDEN);
     }
+
+    //401 unauthorized - BadCredentials
+    @ExceptionHandler(value = {BadCredentialsException.class})
+    public ResponseEntity<Object> handleBadCredentialsException(Exception e){
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                e,
+                HttpStatus.UNAUTHORIZED,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, HttpStatus.UNAUTHORIZED);
+    }
+
+    //401 unauthorized - JWTVerification
+    @ExceptionHandler(value = {JWTVerificationException.class})
+    public ResponseEntity<Object> handleJWTVerificationException(Exception e){
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                e,
+                HttpStatus.UNAUTHORIZED,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, HttpStatus.UNAUTHORIZED);
+    }
+
 }

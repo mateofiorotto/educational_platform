@@ -34,8 +34,3 @@ Establecer los siguientes permisos:
 Los usuarios administradores pueden realizar todas las operaciones CRUD sobre todas las entidades.
 Los usuarios estudiantes solo podrán leer/consultar los cursos y estudiantes disponibles.
 Los usuarios profesores podrán leer tanto cursos, como profesores, como estudiantes.
-Extra (opcional): Los profesores tendrán permiso de EDICIÓN sobre los cursos en los que ellos son profesores.
-
-POR HACER:
-1 - README
-2 - SWAGGER

@@ -2,6 +2,10 @@ package com.mateo.plataforma_educativa.controller;
 
 import com.mateo.plataforma_educativa.dto.*;
 import com.mateo.plataforma_educativa.service.ITeacherService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,15 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
+    @Operation(summary = "Get teachers",
+            description = "Return the list of teachers. Only users with ADMIN or STUDENT roles.",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Teachers returned succesfully"),
+            @ApiResponse(responseCode = "403", description = "Access Denied"),
+            @ApiResponse(responseCode = "500", description = "Invalid Token. (Unauthorized/Not Authenticated)"),
+    })
     @GetMapping("/")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<?> getTeachers(){
@@ -31,6 +44,16 @@ public class TeacherController {
         return ResponseEntity.ok(getResponseTeachers);
     }
 
+    @Operation(summary = "Get teacher",
+            description = "Return one teacher. Only users with ADMIN or STUDENT roles.",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Teacher returned succesfully"),
+            @ApiResponse(responseCode = "403", description = "Access Denied"),
+            @ApiResponse(responseCode = "404", description = "Teacher not found"),
+            @ApiResponse(responseCode = "500", description = "Invalid Token. (Unauthorized/Not Authenticated)")
+    })
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<?> getTeacherById(@PathVariable Long id){
@@ -42,6 +65,16 @@ public class TeacherController {
         return ResponseEntity.ok(getResponseTeacher);
     }
 
+    @Operation(summary = "Create a teacher",
+            description = "Return the created teacher. Only the users with ADMIN role can create new teachers.",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Teacher created succesfully"),
+            @ApiResponse(responseCode = "400", description = "Bad Request, fields validation error"),
+            @ApiResponse(responseCode = "403", description = "Access Denied"),
+            @ApiResponse(responseCode = "500", description = "Invalid Token. (Unauthorized/Not Authenticated)")
+    })
     @PostMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createTeacher(@Valid @RequestBody TeacherRequestDTO teacherDTO){
@@ -52,6 +85,17 @@ public class TeacherController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saveStudentResponse);
     }
 
+    @Operation(summary = "Edit a teacher",
+            description = "Return the edited teacher. Only the users with ADMIN role can edit teachers.",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Teacher edited succesfully"),
+            @ApiResponse(responseCode = "400", description = "Bad Request, fields validation error"),
+            @ApiResponse(responseCode = "403", description = "Access Denied"),
+            @ApiResponse(responseCode = "404", description = "Teacher not found"),
+            @ApiResponse(responseCode = "500", description = "Invalid Token. (Unauthorized/Not Authenticated)")
+    })
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateTeacher(@Valid @RequestBody TeacherRequestDTO teacherDTO, @PathVariable Long id){
@@ -62,6 +106,16 @@ public class TeacherController {
         return ResponseEntity.status(HttpStatus.OK).body(updateStudentResponse);
     }
 
+    @Operation(summary = "Delete a teacher",
+            description = "Return a confirmation message. Only the users with ADMIN role can delete teachers.",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Teacher deleted succesfully"),
+            @ApiResponse(responseCode = "403", description = "Access Denied"),
+            @ApiResponse(responseCode = "404", description = "Teacher not found"),
+            @ApiResponse(responseCode = "500", description = "Invalid Token. (Unauthorized/Not Authenticated)")
+    })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteTeacher(@PathVariable Long id){

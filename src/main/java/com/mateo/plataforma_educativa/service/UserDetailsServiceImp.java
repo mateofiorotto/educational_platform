@@ -91,10 +91,12 @@ public class UserDetailsServiceImp implements UserDetailsService {
      * @return username with authorities and password
      */
     public Authentication authenticate(String username, String password) {
-        UserDetails userDetails = this.loadUserByUsername(username);
+        UserDetails userDetails;
 
         //If !user
-        if (userDetails == null) {
+        try {
+            userDetails = this.loadUserByUsername(username);
+        } catch (UsernameNotFoundException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
 
